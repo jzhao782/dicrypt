@@ -49,6 +49,6 @@ def boxcox_standardize(df_num, df_lmbdas=None, df_min=None):
 def get_scikit_metrics(pred, y):
     rmse = mean_squared_error(pred, y) ** 0.5
     mape = mean_absolute_percentage_error(pred, y)
-    r2_score = r2_score(pred, y)
+    r2 = r2_score(pred, y)
 
-    return rmse, mape, r2_score
+    return rmse, mape, r2
