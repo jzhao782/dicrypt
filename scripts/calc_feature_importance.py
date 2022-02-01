@@ -3,6 +3,9 @@ import numpy as np
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_absolute_percentage_error, r2_score
 
+data_dir = 'data/'
+output_dir = 'output/xgb/'
+
 def predict(model, X, y):
     pred = model.predict(X)
     score = r2_score(pred, y)
@@ -22,15 +25,16 @@ def calc_rel_diffs(model, X, y) :
         X_shuff[i] = X[i].values
         print(f'calculated {i}')
 
-    rel_diffs_pd = pd.DataFrame(data=rel_diffs, index=[0])
-    rel_diffs_pd_sorted = rel_diffs_pd.sort_values(by = 0, axis=1)
-    rel_diffs_pd_sorted.to_pickle("rel_diffs.pkl")
-    rel_diffs_pd_sorted.to_csv("rel_diffs.csv")
+    rel_diffs_df = pd.DataFrame(data=rel_diffs, index=[0])
+    rel_diffs_df_sorted = rel_diffs_df.sort_values(by = 0, axis=1)
+    
+    return rel_diffs_df_sorted
 
-dataset = pd.read_csv('addedfeatures.csv')
-X, y = dataset.iloc[:,4:], dataset.iloc[:,2]
+X = pd.read_csv(data_dir + 'X.csv', index_col = 'id') # read in data
+y = pd.read_csv(data_dir + 'y.csv', index_col = 'id') # read in data
 
 model = XGBRegressor()
-model.load_model("model_xgboost.json")
+model.load_model(output_dir + "model_xgboost.json")
 
-calc_rel_diffs(model, X, y)
+df = calc_rel_diffs(model, X, y)
+df.to_csv(output_dir + "rel_diffs.csv")

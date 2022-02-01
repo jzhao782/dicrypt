@@ -4,6 +4,7 @@ from pymatgen.ext.matproj import MPRester
 from pymatgen.symmetry.analyzer import SpacegroupAnalyzer
 
 data_dir = 'data/'
+checkpoint_dir = '.script_checkpoints'
 
 dict = {'id' : [], 'crystal_system' : [], 'point_group' : []}
 ids = pd.read_csv(data_dir + 'ids.csv')
@@ -11,7 +12,7 @@ ids = pd.read_csv(data_dir + 'ids.csv')
 count = 0
 for i in ids.id:
     try:
-        with MPRester(api_key='scL4gtOTH7U850nI') as m:
+        with MPRester(api_key='') as m: # add your API key
             struct = m.get_structure_by_material_id(i)
 
         analyzer = SpacegroupAnalyzer(struct)
@@ -29,8 +30,8 @@ for i in ids.id:
     
     if count % 1000 == 0:
         df = pd.DataFrame(dict)
-        df.to_pickle(data_dir + 'crystal_systems_log.pkl')
+        df.to_pickle(checkpoint_dir + 'symmetry_checkpoint.pkl')
         print('Saved')
 
 df = pd.DataFrame(dict)
-df.to_csv(data_dir + 'crystal_systems.csv')
+df.to_csv(data_dir + 'symmetry_labels.csv')

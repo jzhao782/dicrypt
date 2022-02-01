@@ -1,6 +1,9 @@
 # personal files
 materials_H-Rn/
 *archived/
+.script_checkpoints/*
+aux_*
+output/*/*
 
 # visual studio stuff
 .vscode/

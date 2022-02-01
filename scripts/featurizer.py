@@ -28,6 +28,8 @@ def parse_data():
         print(str(len(dict["Composition"])) + "th row completed!")
     
     df = pd.DataFrame(dict)
+    df.set_index('id')
+    
     return df
 
 def featurize(df):
