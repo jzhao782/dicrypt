@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dicrypt.utils import get_scikit_metrics
 from sklearn.ensemble import RandomForestRegressor
+import joblib
 
 data_dir = 'data/'
 output_dir = 'output/random_forest/'
@@ -24,7 +25,7 @@ test_rmse, test_mape, test_r2score = get_scikit_metrics(test_pred, y_valid)
 pred = pd.Series(test_pred)
 pred.to_csv(output_dir + "predictions.csv")
 y_valid.to_csv(output_dir + "y_valid.csv")
-# model.save_model("model_random_forest.json")
+joblib.dump(model, output_dir + "model_random_forest.json")
 
 print(f'train_rmse={train_rmse}')
 print(f'train_mape={train_mape}')
