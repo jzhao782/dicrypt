@@ -3,8 +3,9 @@ import requests
 from requests.structures import CaseInsensitiveDict
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
+from decouple import config
 
-api_key = ''
+api_key = config('NG_API_KEY')
 data_dir = 'data/'
 checkpoint_dir = '.script_checkpoints/'
 file_name = "e_above_hull"
