@@ -9,7 +9,7 @@ from decouple import config
 api_key = config('NG_API_KEY')
 data_dir = 'data/'
 checkpoint_dir = '.script_checkpoints/'
-properties = ['crystal_system', 'point_group']
+properties = ['formula_pretty'] # example
 
 dict = {'id' : []}
 for property in properties:
@@ -24,7 +24,7 @@ def fetch(url, headers, i, count):
         data = res.json()
         
         for property in properties:
-            dict[property].append(data["data"][0]["symmetry"][property])
+            dict[property].append(data["data"][0][property]) # might need to check if properties are nested
         dict['id'].append(i)
     except Exception as e:
         print(e)
@@ -46,6 +46,7 @@ with ThreadPoolExecutor(max_workers=20) as executor:
 pbar.close()
 
 df = pd.DataFrame(dict)
+df = df.set_index("id")
 additional_properties = pd.read_csv(data_dir + "additional_properties.csv", index_col="id")
 additional_properties = pd.concat([additional_properties, df], axis=1)
 additional_properties.to_csv(data_dir + "additional_properties.csv")
